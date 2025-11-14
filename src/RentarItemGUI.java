@@ -56,48 +56,55 @@ public class RentarItemGUI extends JFrame {
     
     private void configurarVentana() {
         setTitle("Rentar Ítem");
-        setSize(600, 500);
+        setSize(650, 550);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
+        getContentPane().setBackground(new Color(245, 245, 245));
     }
     
     private void inicializarComponentes() {
-        // Panel superior - Búsqueda
         JPanel panelBusqueda = crearPanelBusqueda();
         add(panelBusqueda, BorderLayout.NORTH);
         
-        // Panel central - Información del ítem
         panelInfo = new JPanel();
         panelInfo.setLayout(new BorderLayout());
-        panelInfo.setBorder(BorderFactory.createTitledBorder("Información del Ítem"));
-        panelInfo.setPreferredSize(new Dimension(580, 300));
+        panelInfo.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createLineBorder(new Color(200, 200, 200), 2),
+            "Información del Ítem",
+            0, 0,
+            new Font("Arial", Font.BOLD, 14),
+            new Color(138, 43, 226)
+        ));
+        panelInfo.setPreferredSize(new Dimension(630, 360));
+        panelInfo.setBackground(Color.WHITE);
         add(panelInfo, BorderLayout.CENTER);
         
-        // Panel inferior - Acciones
         JPanel panelAcciones = crearPanelAcciones();
         add(panelAcciones, BorderLayout.SOUTH);
     }
     
     private JPanel crearPanelBusqueda() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 15));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panel.setBackground(Color.WHITE);
         
         JLabel lblCodigo = new JLabel("Código del Ítem:");
-        lblCodigo.setFont(new Font("Arial", Font.BOLD, 14));
+        lblCodigo.setFont(new Font("Arial", Font.BOLD, 15));
         
         txtCodigo = new JTextField(15);
-        txtCodigo.setFont(new Font("Arial", Font.PLAIN, 14));
+        txtCodigo.setFont(new Font("Arial", Font.PLAIN, 15));
+        txtCodigo.setPreferredSize(new Dimension(200, 35));
         
         btnBuscar = new JButton("Buscar");
         btnBuscar.setFont(new Font("Arial", Font.BOLD, 14));
-        btnBuscar.setBackground(new Color(33, 150, 243));
+        btnBuscar.setBackground(new Color(138, 43, 226));
         btnBuscar.setForeground(Color.WHITE);
         btnBuscar.setFocusPainted(false);
         btnBuscar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnBuscar.setPreferredSize(new Dimension(100, 35));
         btnBuscar.addActionListener(e -> buscarItem());
         
-        // Enter en el campo de texto también busca
         txtCodigo.addActionListener(e -> buscarItem());
         
         panel.add(lblCodigo);
@@ -108,22 +115,23 @@ public class RentarItemGUI extends JFrame {
     }
     
     private JPanel crearPanelAcciones() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 15));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panel.setBackground(new Color(245, 245, 245));
         
         JButton btnRentar = new JButton("Rentar");
-        btnRentar.setPreferredSize(new Dimension(150, 40));
-        btnRentar.setFont(new Font("Arial", Font.BOLD, 14));
-        btnRentar.setBackground(new Color(76, 175, 80));
+        btnRentar.setPreferredSize(new Dimension(160, 45));
+        btnRentar.setFont(new Font("Arial", Font.BOLD, 15));
+        btnRentar.setBackground(new Color(255, 140, 0));
         btnRentar.setForeground(Color.WHITE);
         btnRentar.setFocusPainted(false);
         btnRentar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnRentar.addActionListener(e -> procesarRenta());
         
         JButton btnCerrar = new JButton("Cerrar");
-        btnCerrar.setPreferredSize(new Dimension(150, 40));
-        btnCerrar.setFont(new Font("Arial", Font.BOLD, 14));
-        btnCerrar.setBackground(new Color(244, 67, 54));
+        btnCerrar.setPreferredSize(new Dimension(160, 45));
+        btnCerrar.setFont(new Font("Arial", Font.BOLD, 15));
+        btnCerrar.setBackground(new Color(220, 20, 60));
         btnCerrar.setForeground(Color.WHITE);
         btnCerrar.setFocusPainted(false);
         btnCerrar.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -136,16 +144,20 @@ public class RentarItemGUI extends JFrame {
     }
     
     private void buscarItem() {
-        // Validar que hay ítems
         if (items.isEmpty()) {
-            BaseGUI.mostrarAdvertencia(this, "No hay ítems registrados en el sistema.");
+            JOptionPane.showMessageDialog(this, 
+                "No hay ítems registrados en el sistema.",
+                "Advertencia",
+                JOptionPane.WARNING_MESSAGE);
             return;
         }
         
-        // Validar entrada
         String codigoStr = txtCodigo.getText().trim();
         if (codigoStr.isEmpty()) {
-            BaseGUI.mostrarError(this, "Por favor ingrese un código.");
+            JOptionPane.showMessageDialog(this, 
+                "Por favor ingrese un código.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
             txtCodigo.requestFocus();
             return;
         }
@@ -155,14 +167,20 @@ public class RentarItemGUI extends JFrame {
             itemEncontrado = buscarItemPorCodigo(codigo);
             
             if (itemEncontrado == null) {
-                BaseGUI.mostrarError(this, "Item No Existe");
+                JOptionPane.showMessageDialog(this, 
+                    "Item No Existe",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
                 limpiarPanelInfo();
             } else {
                 mostrarInformacionItem();
             }
             
         } catch (NumberFormatException e) {
-            BaseGUI.mostrarError(this, "El código debe ser un número válido.");
+            JOptionPane.showMessageDialog(this, 
+                "El código debe ser un número válido.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
             txtCodigo.requestFocus();
         }
     }
@@ -170,63 +188,93 @@ public class RentarItemGUI extends JFrame {
     private void mostrarInformacionItem() {
         panelInfo.removeAll();
         
-        JPanel contenedor = new JPanel(new BorderLayout(10, 10));
+        JPanel contenedor = new JPanel(new BorderLayout(15, 15));
         contenedor.setBackground(Color.WHITE);
-        contenedor.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        contenedor.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
-        // Imagen a la izquierda
         if (itemEncontrado.getImagenitem() != null) {
             JLabel lblImagen = new JLabel();
             ImageIcon icon = itemEncontrado.getImagenitem();
-            Image img = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+            Image img = icon.getImage().getScaledInstance(220, 220, Image.SCALE_SMOOTH);
             lblImagen.setIcon(new ImageIcon(img));
-            lblImagen.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+            lblImagen.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 2));
             contenedor.add(lblImagen, BorderLayout.WEST);
         }
         
-        // Información a la derecha
         JPanel panelDatos = new JPanel();
         panelDatos.setLayout(new BoxLayout(panelDatos, BoxLayout.Y_AXIS));
         panelDatos.setBackground(Color.WHITE);
         panelDatos.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 10));
         
-        // Nombre
         JLabel lblNombre = new JLabel("Nombre: " + itemEncontrado.getNombreItem());
-        lblNombre.setFont(new Font("Arial", Font.BOLD, 18));
+        lblNombre.setFont(new Font("Arial", Font.BOLD, 20));
+        lblNombre.setForeground(new Color(138, 43, 226));
         panelDatos.add(lblNombre);
-        panelDatos.add(Box.createRigidArea(new Dimension(0, 15)));
+        panelDatos.add(Box.createRigidArea(new Dimension(0, 12)));
         
-        // Estado (solo para películas)
         if (itemEncontrado instanceof Movie) {
             Movie movie = (Movie) itemEncontrado;
             JLabel lblEstado = new JLabel("Estado: " + movie.getEstado());
-            lblEstado.setFont(new Font("Arial", Font.PLAIN, 16));
+            lblEstado.setFont(new Font("Arial", Font.BOLD, 17));
             lblEstado.setForeground(movie.getEstado().equals("ESTRENO") ? 
                 new Color(255, 87, 34) : new Color(76, 175, 80));
             panelDatos.add(lblEstado);
             panelDatos.add(Box.createRigidArea(new Dimension(0, 10)));
+            
+            // Fecha de estreno
+            Calendar fecha = movie.getFechaEstreno();
+            String fechaTexto = fecha.get(Calendar.DAY_OF_MONTH) + "/" +
+                               (fecha.get(Calendar.MONTH) + 1) + "/" +
+                               fecha.get(Calendar.YEAR);
+            JLabel lblFecha = new JLabel("Fecha de Estreno: " + fechaTexto);
+            lblFecha.setFont(new Font("Arial", Font.PLAIN, 15));
+            panelDatos.add(lblFecha);
+            panelDatos.add(Box.createRigidArea(new Dimension(0, 10)));
         }
         
-        // Precio
-        JLabel lblPrecio = new JLabel("Precio Base: Lps. " + 
-            String.format("%.2f", itemEncontrado.getPrecioBaseRenta()));
+        if (itemEncontrado instanceof Game) {
+            Game game = (Game) itemEncontrado;
+            JLabel lblTipoGame = new JLabel("Videojuego - PS3");
+            lblTipoGame.setFont(new Font("Arial", Font.BOLD, 17));
+            lblTipoGame.setForeground(new Color(156, 39, 176));
+            panelDatos.add(lblTipoGame);
+            panelDatos.add(Box.createRigidArea(new Dimension(0, 10)));
+            
+            // Fecha de publicación
+            Calendar fecha = game.getFechaPublicacion();
+            String fechaTexto = fecha.get(Calendar.DAY_OF_MONTH) + "/" +
+                               (fecha.get(Calendar.MONTH) + 1) + "/" +
+                               fecha.get(Calendar.YEAR);
+            JLabel lblFecha = new JLabel("Fecha de Publicación: " + fechaTexto);
+            lblFecha.setFont(new Font("Arial", Font.PLAIN, 15));
+            panelDatos.add(lblFecha);
+            panelDatos.add(Box.createRigidArea(new Dimension(0, 10)));
+        }
+        
+        JLabel lblPrecio = new JLabel("Precio: Lps. " + 
+            String.format("%.2f", itemEncontrado.getPrecioBaseRenta()) + " / día");
         lblPrecio.setFont(new Font("Arial", Font.PLAIN, 16));
         panelDatos.add(lblPrecio);
         panelDatos.add(Box.createRigidArea(new Dimension(0, 10)));
         
-        // Código
+        JLabel lblCopias = new JLabel("Copias disponibles: " + itemEncontrado.getCantcopias());
+        lblCopias.setFont(new Font("Arial", Font.BOLD, 16));
+        
+        if (itemEncontrado.getCantcopias() == 0) {
+            lblCopias.setForeground(Color.RED);
+        } else if (itemEncontrado.getCantcopias() <= 2) {
+            lblCopias.setForeground(new Color(255, 152, 0));
+        } else {
+            lblCopias.setForeground(new Color(76, 175, 80));
+        }
+        
+        panelDatos.add(lblCopias);
+        panelDatos.add(Box.createRigidArea(new Dimension(0, 10)));
+        
         JLabel lblCodigo = new JLabel("Código: " + itemEncontrado.getCodigoitem());
         lblCodigo.setFont(new Font("Arial", Font.PLAIN, 14));
         lblCodigo.setForeground(Color.GRAY);
         panelDatos.add(lblCodigo);
-        panelDatos.add(Box.createRigidArea(new Dimension(0, 10)));
-        
-        // Tipo
-        String tipo = itemEncontrado instanceof Movie ? "Película" : "Videojuego";
-        JLabel lblTipo = new JLabel("Tipo: " + tipo);
-        lblTipo.setFont(new Font("Arial", Font.ITALIC, 14));
-        lblTipo.setForeground(Color.GRAY);
-        panelDatos.add(lblTipo);
         
         contenedor.add(panelDatos, BorderLayout.CENTER);
         
@@ -237,55 +285,83 @@ public class RentarItemGUI extends JFrame {
     
     private void procesarRenta() {
         if (itemEncontrado == null) {
-            BaseGUI.mostrarAdvertencia(this, 
-                "Primero debe buscar y seleccionar un ítem.");
+            JOptionPane.showMessageDialog(this, 
+                "Primero debe buscar y seleccionar un ítem.",
+                "Advertencia",
+                JOptionPane.WARNING_MESSAGE);
             return;
         }
         
-        // Solicitar cantidad de días
-        Integer dias = BaseGUI.solicitarEntero(this, 
-            "Ingrese la cantidad de días de renta:");
-        
-        if (dias == null) return; // Usuario canceló
-        
-        if (dias <= 0) {
-            BaseGUI.mostrarError(this, 
-                "La cantidad de días debe ser mayor a 0.");
+        // VALIDACIÓN: Verificar disponibilidad
+        if (!itemEncontrado.hayDisponibilidad()) {
+            JOptionPane.showMessageDialog(this, 
+                "NO HAY COPIAS DISPONIBLES\n\n" +
+                "Este ítem está agotado en este momento.\n" +
+                "Copias disponibles: " + itemEncontrado.getCantcopias() + "\n\n" +
+                "Por favor, intente más tarde.",
+                "Error - Sin inventario",
+                JOptionPane.ERROR_MESSAGE);
             return;
         }
         
-        // Calcular monto total
-        double total = itemEncontrado.pagoRenta(dias);
+        String diasStr = JOptionPane.showInputDialog(this, 
+            "Ingrese la cantidad de días de renta:",
+            "Cantidad de Días",
+            JOptionPane.QUESTION_MESSAGE);
         
-        // Crear panel con detalles de la renta
-        JPanel panelResumen = new JPanel();
-        panelResumen.setLayout(new BoxLayout(panelResumen, BoxLayout.Y_AXIS));
-        panelResumen.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        if (diasStr == null || diasStr.trim().isEmpty()) return;
         
-        JLabel lblItem = new JLabel("Ítem: " + itemEncontrado.getNombreItem());
-        lblItem.setFont(new Font("Arial", Font.BOLD, 14));
-        
-        JLabel lblDias = new JLabel("Días de renta: " + dias);
-        lblDias.setFont(new Font("Arial", Font.PLAIN, 14));
-        
-        JLabel lblTotal = new JLabel("TOTAL A PAGAR: Lps. " + 
-            String.format("%.2f", total));
-        lblTotal.setFont(new Font("Arial", Font.BOLD, 16));
-        lblTotal.setForeground(new Color(76, 175, 80));
-        
-        panelResumen.add(lblItem);
-        panelResumen.add(Box.createRigidArea(new Dimension(0, 10)));
-        panelResumen.add(lblDias);
-        panelResumen.add(Box.createRigidArea(new Dimension(0, 15)));
-        panelResumen.add(lblTotal);
-        
-        JOptionPane.showMessageDialog(this, 
-            panelResumen, 
-            "Resumen de Renta", 
-            JOptionPane.INFORMATION_MESSAGE);
-        
-        // Limpiar formulario para otra renta
-        limpiarFormulario();
+        try {
+            int dias = Integer.parseInt(diasStr.trim());
+            
+            if (dias <= 0) {
+                JOptionPane.showMessageDialog(this, 
+                    "La cantidad de días debe ser mayor a 0.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            double total = itemEncontrado.pagoRenta(dias);
+            
+            int confirmacion = JOptionPane.showConfirmDialog(this,
+                "¿Desea confirmar la renta?\n\n" +
+                "Ítem: " + itemEncontrado.getNombreItem() + "\n" +
+                "Días: " + dias + "\n" +
+                "Total: Lps. " + String.format("%.2f", total),
+                "Confirmar Renta",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+            
+            if (confirmacion != JOptionPane.YES_OPTION) {
+                return;
+            }
+            
+            // Descontar del inventario
+            if (itemEncontrado.rentarCopia()) {
+                JOptionPane.showMessageDialog(this, 
+                    "Renta Exitosa\n\n" +
+                    "Ítem: " + itemEncontrado.getNombreItem() + "\n" +
+                    "Días de renta: " + dias + "\n" +
+                    "TOTAL A PAGAR: Lps. " + String.format("%.2f", total) + "\n\n" +
+                    "Copias restantes: " + itemEncontrado.getCantcopias(),
+                    "Éxito",
+                    JOptionPane.INFORMATION_MESSAGE);
+                
+                mostrarInformacionItem();
+            } else {
+                JOptionPane.showMessageDialog(this, 
+                    "Error al procesar la renta.\nNo hay copias disponibles.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, 
+                "Debe ingresar un número válido.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     private RenItem buscarItemPorCodigo(int codigo) {

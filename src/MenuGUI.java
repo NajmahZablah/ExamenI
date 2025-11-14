@@ -6,6 +6,7 @@
  */
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -27,9 +28,28 @@ public class MenuGUI extends JFrame {
 
     private void cargarImagenFondo() {
         try {
-            ImageIcon icon = new ImageIcon("/default package/ImagenesFondos/Fondo_MenuPrincipal.png");
-            imagenFondo = icon.getImage();
+            // Intenta varias rutas posibles
+            String[] rutasPosibles = {
+                "ImagenesFondos/Fondo_MenuPrincipal.png",
+                "Fondo_MenuPrincipal.png",
+                "src/ImagenesFondos/Fondo_MenuPrincipal.png"
+            };
+            
+            for (String ruta : rutasPosibles) {
+                File archivo = new File(ruta);
+                if (archivo.exists()) {
+                    ImageIcon icon = new ImageIcon(ruta);
+                    imagenFondo = icon.getImage();
+                    System.out.println("Imagen cargada desde: " + ruta);
+                    return;
+                }
+            }
+            
+            System.out.println("No se encontró la imagen de fondo");
+            imagenFondo = null;
+            
         } catch (Exception e) {
+            System.out.println("Error al cargar imagen: " + e.getMessage());
             imagenFondo = null;
         }
     }
@@ -50,6 +70,10 @@ public class MenuGUI extends JFrame {
                 super.paintComponent(g);
                 if (imagenFondo != null) {
                     g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
+                } else {
+                    // Color de respaldo si no hay imagen
+                    g.setColor(new Color(255, 105, 180));
+                    g.fillRect(0, 0, getWidth(), getHeight());
                 }
             }
         };
@@ -65,7 +89,7 @@ public class MenuGUI extends JFrame {
         titulo.setFont(new Font("Arial", Font.BOLD, 30));
         titulo.setForeground(Color.WHITE);
         titulo.setOpaque(true);
-        titulo.setBackground(new Color(0, 0, 0, 150));
+        titulo.setBackground(new Color(0, 0, 0, 180));
         titulo.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         gbc.gridy = 0;
         panelPrincipal.add(titulo, gbc);
@@ -75,7 +99,7 @@ public class MenuGUI extends JFrame {
         subtitulo.setFont(new Font("Arial", Font.ITALIC, 16));
         subtitulo.setForeground(Color.WHITE);
         subtitulo.setOpaque(true);
-        subtitulo.setBackground(new Color(0, 0, 0, 120));
+        subtitulo.setBackground(new Color(0, 0, 0, 150));
         subtitulo.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
         gbc.gridy = 1;
         panelPrincipal.add(subtitulo, gbc);
@@ -84,29 +108,29 @@ public class MenuGUI extends JFrame {
         gbc.gridy = 2;
         panelPrincipal.add(Box.createRigidArea(new Dimension(0, 20)), gbc);
 
-        // Botones
+        // Botones con colores del tema
         gbc.gridy = 3;
-        JButton btnAgregar = crearBoton("Agregar Ítem", new Color(76, 175, 80, 200));
+        JButton btnAgregar = crearBoton("Agregar Ítem", new Color(138, 43, 226)); // Morado
         btnAgregar.addActionListener(e -> agregarItem());
         panelPrincipal.add(btnAgregar, gbc);
 
         gbc.gridy = 4;
-        JButton btnRentar = crearBoton("Rentar", new Color(33, 150, 243, 200));
+        JButton btnRentar = crearBoton("Rentar", new Color(255, 140, 0)); // Naranja
         btnRentar.addActionListener(e -> rentarItem());
         panelPrincipal.add(btnRentar, gbc);
 
         gbc.gridy = 5;
-        JButton btnSubmenu = crearBoton("Ejecutar Submenú", new Color(255, 152, 0, 200));
+        JButton btnSubmenu = crearBoton("Ejecutar Submenú", new Color(255, 20, 147)); // Rosa fuerte
         btnSubmenu.addActionListener(e -> ejecutarSubmenu());
         panelPrincipal.add(btnSubmenu, gbc);
 
         gbc.gridy = 6;
-        JButton btnImprimir = crearBoton("Imprimir Todo", new Color(156, 39, 176, 200));
+        JButton btnImprimir = crearBoton("Imprimir Todo", new Color(75, 0, 130)); // Índigo
         btnImprimir.addActionListener(e -> imprimirTodo());
         panelPrincipal.add(btnImprimir, gbc);
 
         gbc.gridy = 7;
-        JButton btnSalir = crearBoton("Salir", new Color(244, 67, 54, 200));
+        JButton btnSalir = crearBoton("Salir", new Color(220, 20, 60)); // Rojo carmesí
         btnSalir.addActionListener(e -> salir());
         panelPrincipal.add(btnSalir, gbc);
 
@@ -125,16 +149,6 @@ public class MenuGUI extends JFrame {
             BorderFactory.createEmptyBorder(10, 20, 10, 20)
         ));
         boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        Color colorOriginal = color;
-        boton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                boton.setBackground(colorOriginal.brighter());
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                boton.setBackground(colorOriginal);
-            }
-        });
         
         return boton;
     }
@@ -234,7 +248,7 @@ public class MenuGUI extends JFrame {
         
         JLabel encabezado = new JLabel("Total de ítems: " + items.size(), SwingConstants.CENTER);
         encabezado.setFont(new Font("Arial", Font.BOLD, 18));
-        encabezado.setForeground(new Color(33, 150, 243));
+        encabezado.setForeground(new Color(138, 43, 226));
         contenedor.add(encabezado);
         contenedor.add(Box.createRigidArea(new Dimension(0, 15)));
         
@@ -259,7 +273,7 @@ public class MenuGUI extends JFrame {
             BorderFactory.createEmptyBorder(20, 20, 20, 20)
         ));
         tarjeta.setBackground(Color.WHITE);
-        tarjeta.setMaximumSize(new Dimension(900, 220));
+        tarjeta.setMaximumSize(new Dimension(900, 240));
         
         if (item.getImagenitem() != null) {
             JLabel lblImagen = new JLabel();
@@ -276,7 +290,7 @@ public class MenuGUI extends JFrame {
         
         JLabel lblNombre = new JLabel("Nombre: " + item.getNombreItem());
         lblNombre.setFont(new Font("Arial", Font.BOLD, 20));
-        lblNombre.setForeground(new Color(33, 150, 243));
+        lblNombre.setForeground(new Color(138, 43, 226));
         panelInfo.add(lblNombre);
         panelInfo.add(Box.createRigidArea(new Dimension(0, 10)));
         
@@ -287,6 +301,29 @@ public class MenuGUI extends JFrame {
             lblEstado.setForeground(movie.getEstado().equals("ESTRENO") ? 
                 new Color(255, 87, 34) : new Color(76, 175, 80));
             panelInfo.add(lblEstado);
+            panelInfo.add(Box.createRigidArea(new Dimension(0, 8)));
+            
+            // Mostrar fecha de estreno
+            java.util.Calendar fecha = movie.getFechaEstreno();
+            String fechaTexto = fecha.get(java.util.Calendar.DAY_OF_MONTH) + "/" +
+                               (fecha.get(java.util.Calendar.MONTH) + 1) + "/" +
+                               fecha.get(java.util.Calendar.YEAR);
+            JLabel lblFecha = new JLabel("Fecha de Estreno: " + fechaTexto);
+            lblFecha.setFont(new Font("Arial", Font.PLAIN, 14));
+            panelInfo.add(lblFecha);
+            panelInfo.add(Box.createRigidArea(new Dimension(0, 8)));
+        }
+        
+        if (item instanceof Game) {
+            Game game = (Game) item;
+            // Mostrar fecha de publicación
+            java.util.Calendar fecha = game.getFechaPublicacion();
+            String fechaTexto = fecha.get(java.util.Calendar.DAY_OF_MONTH) + "/" +
+                               (fecha.get(java.util.Calendar.MONTH) + 1) + "/" +
+                               fecha.get(java.util.Calendar.YEAR);
+            JLabel lblFecha = new JLabel("Fecha de Publicación: " + fechaTexto);
+            lblFecha.setFont(new Font("Arial", Font.PLAIN, 14));
+            panelInfo.add(lblFecha);
             panelInfo.add(Box.createRigidArea(new Dimension(0, 8)));
         }
         

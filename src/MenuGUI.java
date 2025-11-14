@@ -88,6 +88,15 @@ public class MenuGUI extends JFrame {
         AgregarItem agregar = new AgregarItem(items); // JFrame de agregar ítem
         agregar.setVisible(true);
     }
+    
+    private void rentar() {
+        if (items.isEmpty()) {
+            BaseGUI.mostrarAdvertencia(this, "No hay ítems registrados.");
+            return;
+        }
+        RentarItemGUI ventanaRentar = new RentarItemGUI(items);  // Sin pasar 'this'
+        ventanaRentar.setVisible(true);
+    }
 
 //    private void abrirRentar() {
 //        if (items.isEmpty()) {

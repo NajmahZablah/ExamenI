@@ -38,7 +38,7 @@ import java.awt.Component;
  *
  * @author najma
  */
-public class RentarItemGUI extends JDialog {
+public class RentarItemGUI extends JFrame {
     
     private ArrayList<RenItem> items;
     private JTextField txtCodigo;
@@ -46,18 +46,19 @@ public class RentarItemGUI extends JDialog {
     private JPanel panelInfo;
     private RenItem itemEncontrado;
     
-    public RentarItemGUI(JFrame parent, ArrayList<RenItem> items) {
-        super(parent, "Rentar Ítem", true);
+    public RentarItemGUI(ArrayList<RenItem> items) {
         this.items = items;
         this.itemEncontrado = null;
         
-        inicializarComponentes();
         configurarVentana();
+        inicializarComponentes();
     }
     
     private void configurarVentana() {
+        setTitle("Rentar Ítem");
         setSize(600, 500);
-        setLocationRelativeTo(getParent());
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
     }
     
@@ -119,17 +120,17 @@ public class RentarItemGUI extends JDialog {
         btnRentar.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnRentar.addActionListener(e -> procesarRenta());
         
-        JButton btnCancelar = new JButton("Cancelar");
-        btnCancelar.setPreferredSize(new Dimension(150, 40));
-        btnCancelar.setFont(new Font("Arial", Font.BOLD, 14));
-        btnCancelar.setBackground(new Color(244, 67, 54));
-        btnCancelar.setForeground(Color.WHITE);
-        btnCancelar.setFocusPainted(false);
-        btnCancelar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnCancelar.addActionListener(e -> dispose());
+        JButton btnCerrar = new JButton("Cerrar");
+        btnCerrar.setPreferredSize(new Dimension(150, 40));
+        btnCerrar.setFont(new Font("Arial", Font.BOLD, 14));
+        btnCerrar.setBackground(new Color(244, 67, 54));
+        btnCerrar.setForeground(Color.WHITE);
+        btnCerrar.setFocusPainted(false);
+        btnCerrar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnCerrar.addActionListener(e -> dispose());
         
         panel.add(btnRentar);
-        panel.add(btnCancelar);
+        panel.add(btnCerrar);
         
         return panel;
     }
@@ -283,7 +284,7 @@ public class RentarItemGUI extends JDialog {
             "Resumen de Renta", 
             JOptionPane.INFORMATION_MESSAGE);
         
-        // Limpiar y cerrar
+        // Limpiar formulario para otra renta
         limpiarFormulario();
     }
     

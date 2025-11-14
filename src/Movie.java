@@ -16,8 +16,8 @@ public class Movie extends RenItem {
     
     // constructor
     public Movie(int codigoItem, String nombreItem, double precioBaseRenta, 
-            int cantcopias) {
-        super(codigoItem, nombreItem, precioBaseRenta, cantcopias);
+            int cantcopias, String rutaImagen) {
+        super(codigoItem, nombreItem, precioBaseRenta, cantcopias, rutaImagen);
         this.fechaEstreno = Calendar.getInstance();
         
         

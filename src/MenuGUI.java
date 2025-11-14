@@ -68,6 +68,15 @@ public class MenuGUI extends JFrame {
         btn.addActionListener(accion);
         return btn;
     }
+    
+    private void rentar() {
+        if (items.isEmpty()) {
+            BaseGUI.mostrarAdvertencia(this, "No hay ítems registrados.");
+            return;
+        }
+        RentarItemGUI ventanaRentar = new RentarItemGUI(items);  // Sin pasar 'this'
+        ventanaRentar.setVisible(true);
+    }
 
     private Component crearEspacio() {
         return Box.createRigidArea(new Dimension(0, 18));

@@ -9,9 +9,8 @@ import java.awt.*;
  * @author andre
  */
 public class BaseGUI {
-    //aqui solo estan los metodos para la interfaz de la pantalla main :3
     
-        public static JButton crearBoton(String texto, Color color) {
+    public static JButton crearBoton(String texto, Color color) {
         JButton btn = new JButton(texto);
         btn.setPreferredSize(new Dimension(300, 50));
         btn.setFont(new Font("Arial", Font.BOLD, 16));
@@ -23,7 +22,6 @@ public class BaseGUI {
         return btn;
     }
     
-   
     public static JPanel crearTarjeta(RenItem item) {
         JPanel tarjeta = new JPanel(new BorderLayout(10, 10));
         tarjeta.setBorder(BorderFactory.createCompoundBorder(
@@ -49,7 +47,6 @@ public class BaseGUI {
         return tarjeta;
     }
     
-   
     private static JPanel crearPanelInfo(RenItem item) {
         JPanel panelInfo = new JPanel();
         panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
@@ -60,14 +57,17 @@ public class BaseGUI {
         panelInfo.add(lblNombre);
         panelInfo.add(Box.createRigidArea(new Dimension(0, 5)));
         
-//        if (item instanceof Movie) {
-//            Movie movie = (Movie) item;
-//            JLabel lblEstado = new JLabel("Estado: " + movie.getEstado());
-//            lblEstado.setFont(new Font("Arial", Font.PLAIN, 14));
-//            panelInfo.add(lblEstado);
-//            panelInfo.add(Box.createRigidArea(new Dimension(0, 5)));
-//        }
-//        
+        // Descomentar para mostrar estado en películas
+        if (item instanceof Movie) {
+            Movie movie = (Movie) item;
+            JLabel lblEstado = new JLabel("Estado: " + movie.getEstado());
+            lblEstado.setFont(new Font("Arial", Font.PLAIN, 14));
+            lblEstado.setForeground(movie.getEstado().equals("ESTRENO") ? 
+                new Color(255, 87, 34) : new Color(76, 175, 80));
+            panelInfo.add(lblEstado);
+            panelInfo.add(Box.createRigidArea(new Dimension(0, 5)));
+        }
+        
         JLabel lblPrecio = new JLabel("Precio de Renta: Lps. " + 
             String.format("%.2f", item.getPrecioBaseRenta()));
         lblPrecio.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -82,21 +82,14 @@ public class BaseGUI {
         return panelInfo;
     }
     
-    /**
-     * Muestra un mensaje de error
-     */
     public static void mostrarError(Component parent, String mensaje) {
         JOptionPane.showMessageDialog(parent, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
     }
     
-    /**
-     * Muestra un mensaje de éxito
-     */
     public static void mostrarExito(Component parent, String mensaje) {
         JOptionPane.showMessageDialog(parent, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }
     
-   
     public static void mostrarAdvertencia(Component parent, String mensaje) {
         JOptionPane.showMessageDialog(parent, mensaje, "Advertencia", JOptionPane.WARNING_MESSAGE);
     }
@@ -121,7 +114,6 @@ public class BaseGUI {
         return panel;
     }
     
-    
     public static Integer solicitarEntero(Component parent, String mensaje) {
         try {
             String input = JOptionPane.showInputDialog(parent, mensaje);
@@ -133,7 +125,6 @@ public class BaseGUI {
         }
     }
     
-   
     public static Double solicitarDouble(Component parent, String mensaje) {
         try {
             String input = JOptionPane.showInputDialog(parent, mensaje);
@@ -153,7 +144,6 @@ public class BaseGUI {
         return input;
     }
     
-   
     public static JLabel crearTitulo(String texto) {
         JLabel titulo = new JLabel(texto, SwingConstants.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 24));

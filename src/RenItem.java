@@ -9,19 +9,24 @@ import javax.swing.ImageIcon;
  * @author andre
  */
 public abstract class RenItem {
-        int codigoitem;
-     String nombreItem;
-     double precioBaseRenta;
-     int cantcopias;
-     ImageIcon imagenitem;
+     
+    int codigoitem;
+    String nombreItem;
+    double precioBaseRenta;
+    int cantcopias;
+    ImageIcon imagenitem;
 
     public RenItem(int codigoitem, String nombreItem, double precioBaseRenta, int cantcopias, String rutaImagen) {
         this.codigoitem = codigoitem;
         this.nombreItem = nombreItem;
         this.precioBaseRenta = precioBaseRenta;
         this.cantcopias = 0;
+
+    if (rutaImagen != null && !rutaImagen.isEmpty()) {
+            this.imagenitem = new ImageIcon(rutaImagen);
+        }
     }
-    
+
     public int getCodigoitem() {
         return codigoitem;
     }
@@ -42,7 +47,9 @@ public abstract class RenItem {
         return imagenitem;
     }
 
-
+    public void setImagenitem(ImageIcon imagenitem) {
+        this.imagenitem = imagenitem;
+    }
     public abstract double pagoRenta(int dias);
     
     

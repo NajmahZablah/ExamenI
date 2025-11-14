@@ -4,6 +4,7 @@
  */
 
 import java.util.Calendar;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -19,8 +20,6 @@ public class Movie extends RenItem {
             int cantcopias, String rutaImagen) {
         super(codigoItem, nombreItem, precioBaseRenta, cantcopias, rutaImagen);
         this.fechaEstreno = Calendar.getInstance();
-        
-        
     }
     
     // Getter
@@ -50,7 +49,7 @@ public class Movie extends RenItem {
     
     @Override 
     public String toString() {
-        return super.toString() + " - Movie";
+        return super.toString() + ", Estado: "+getEstado()+" - Movie";
     }
     
     @Override 

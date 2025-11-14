@@ -15,12 +15,23 @@ import java.util.ArrayList;
 public class MenuGUI extends JFrame {
 
     private ArrayList<RenItem> items;
-    private JPanel mainPanel;
+    private JPanel panelPrincipal;
+    private Image imagenFondo;
 
     public MenuGUI() {
         items = new ArrayList<>();
+        cargarImagenFondo();
         configurarVentana();
         crearMenu();
+    }
+
+    private void cargarImagenFondo() {
+        try {
+            ImageIcon icon = new ImageIcon("/default package/ImagenesFondos/Fondo_MenuPrincipal.png");
+            imagenFondo = icon.getImage();
+        } catch (Exception e) {
+            imagenFondo = null;
+        }
     }
 
     private void configurarVentana() {
@@ -28,98 +39,118 @@ public class MenuGUI extends JFrame {
         setSize(900, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
-        getContentPane().setBackground(new Color(240, 245, 250));
+        setResizable(false);
     }
 
     private void crearMenu() {
-        mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setBackground(new Color(240, 245, 250));
+        // Panel con imagen de fondo
+        panelPrincipal = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (imagenFondo != null) {
+                    g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
+                }
+            }
+        };
+        
+        panelPrincipal.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(15, 15, 15, 15);
+        gbc.insets = new Insets(12, 12, 12, 12);
+        gbc.gridx = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Título principal
+        // Título
         JLabel titulo = new JLabel("Sistema de Renta Multimedia", SwingConstants.CENTER);
-        titulo.setFont(new Font("Arial", Font.BOLD, 32));
-        titulo.setForeground(new Color(33, 150, 243));
-        gbc.gridx = 0;
+        titulo.setFont(new Font("Arial", Font.BOLD, 30));
+        titulo.setForeground(Color.WHITE);
+        titulo.setOpaque(true);
+        titulo.setBackground(new Color(0, 0, 0, 150));
+        titulo.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        mainPanel.add(titulo, gbc);
+        panelPrincipal.add(titulo, gbc);
 
         // Subtítulo
         JLabel subtitulo = new JLabel("Gestión de Movies y Games", SwingConstants.CENTER);
         subtitulo.setFont(new Font("Arial", Font.ITALIC, 16));
-        subtitulo.setForeground(new Color(100, 100, 100));
+        subtitulo.setForeground(Color.WHITE);
+        subtitulo.setOpaque(true);
+        subtitulo.setBackground(new Color(0, 0, 0, 120));
+        subtitulo.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
         gbc.gridy = 1;
-        mainPanel.add(subtitulo, gbc);
+        panelPrincipal.add(subtitulo, gbc);
 
         // Espacio
         gbc.gridy = 2;
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 20)), gbc);
+        panelPrincipal.add(Box.createRigidArea(new Dimension(0, 20)), gbc);
 
-        // Botones del menú
+        // Botones
         gbc.gridy = 3;
-        JButton btnAgregar = crearBotonMenu("Agregar Ítem", new Color(76, 175, 80));
-        btnAgregar.addActionListener(e -> abrirAgregarItem());
-        mainPanel.add(btnAgregar, gbc);
+        JButton btnAgregar = crearBoton("Agregar Ítem", new Color(76, 175, 80, 200));
+        btnAgregar.addActionListener(e -> agregarItem());
+        panelPrincipal.add(btnAgregar, gbc);
 
         gbc.gridy = 4;
-        JButton btnRentar = crearBotonMenu("Rentar", new Color(33, 150, 243));
-        btnRentar.addActionListener(e -> abrirRentar());
-        mainPanel.add(btnRentar, gbc);
+        JButton btnRentar = crearBoton("Rentar", new Color(33, 150, 243, 200));
+        btnRentar.addActionListener(e -> rentarItem());
+        panelPrincipal.add(btnRentar, gbc);
 
         gbc.gridy = 5;
-        JButton btnSubmenu = crearBotonMenu("Ejecutar Submenú", new Color(255, 152, 0));
+        JButton btnSubmenu = crearBoton("Ejecutar Submenú", new Color(255, 152, 0, 200));
         btnSubmenu.addActionListener(e -> ejecutarSubmenu());
-        mainPanel.add(btnSubmenu, gbc);
+        panelPrincipal.add(btnSubmenu, gbc);
 
         gbc.gridy = 6;
-        JButton btnImprimir = crearBotonMenu("Imprimir Todo", new Color(156, 39, 176));
+        JButton btnImprimir = crearBoton("Imprimir Todo", new Color(156, 39, 176, 200));
         btnImprimir.addActionListener(e -> imprimirTodo());
-        mainPanel.add(btnImprimir, gbc);
+        panelPrincipal.add(btnImprimir, gbc);
 
         gbc.gridy = 7;
-        JButton btnSalir = crearBotonMenu("Salir", new Color(244, 67, 54));
+        JButton btnSalir = crearBoton("Salir", new Color(244, 67, 54, 200));
         btnSalir.addActionListener(e -> salir());
-        mainPanel.add(btnSalir, gbc);
+        panelPrincipal.add(btnSalir, gbc);
 
-        add(mainPanel, BorderLayout.CENTER);
-        
+        add(panelPrincipal);
     }
 
-    private JButton crearBotonMenu(String texto, Color color) {
-        JButton btn = new JButton(texto);
-        btn.setPreferredSize(new Dimension(350, 60));
-        btn.setFont(new Font("Arial", Font.BOLD, 18));
-        btn.setBackground(color);
-        btn.setForeground(Color.WHITE);
-        btn.setFocusPainted(false);
-        btn.setBorderPainted(false);
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    private JButton crearBoton(String texto, Color color) {
+        JButton boton = new JButton(texto);
+        boton.setPreferredSize(new Dimension(320, 55));
+        boton.setFont(new Font("Arial", Font.BOLD, 17));
+        boton.setBackground(color);
+        boton.setForeground(Color.WHITE);
+        boton.setFocusPainted(false);
+        boton.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Color.WHITE, 2),
+            BorderFactory.createEmptyBorder(10, 20, 10, 20)
+        ));
+        boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
-        // Efecto hover
-        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+        Color colorOriginal = color;
+        boton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn.setBackground(color.brighter());
+                boton.setBackground(colorOriginal.brighter());
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn.setBackground(color);
+                boton.setBackground(colorOriginal);
             }
         });
         
-        return btn;
+        return boton;
     }
 
-    private void abrirAgregarItem() {
-        AgregarItem ventana = new AgregarItem(items);
-        ventana.setVisible(true);
+    private void agregarItem() {
+        new AgregarItem(items);
     }
 
-    private void abrirRentar() {
+    private void rentarItem() {
         if (items.isEmpty()) {
-            BaseGUI.mostrarAdvertencia(this, "No hay ítems registrados en el sistema.");
+            JOptionPane.showMessageDialog(
+                this,
+                "No hay ítems registrados en el sistema.",
+                "Advertencia",
+                JOptionPane.WARNING_MESSAGE
+            );
             return;
         }
         RentarItemGUI ventana = new RentarItemGUI(items);
@@ -128,36 +159,71 @@ public class MenuGUI extends JFrame {
 
     private void ejecutarSubmenu() {
         if (items.isEmpty()) {
-            BaseGUI.mostrarAdvertencia(this, "No hay ítems registrados en el sistema.");
+            JOptionPane.showMessageDialog(
+                this,
+                "No hay ítems registrados en el sistema.",
+                "Advertencia",
+                JOptionPane.WARNING_MESSAGE
+            );
             return;
         }
         
-        Integer codigo = BaseGUI.solicitarEntero(this, "Ingrese el código del ítem:");
-        if (codigo == null) return;
+        String codigoStr = JOptionPane.showInputDialog(
+            this,
+            "Ingrese el código del ítem:",
+            "Ejecutar Submenú",
+            JOptionPane.QUESTION_MESSAGE
+        );
+        
+        if (codigoStr == null || codigoStr.trim().isEmpty()) return;
+        
+        try {
+            int codigo = Integer.parseInt(codigoStr.trim());
+            RenItem item = buscarItemPorCodigo(codigo);
+            
+            if (item == null) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Item No Existe",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
 
-        RenItem item = buscarItemPorCodigo(codigo);
-        if (item == null) {
-            BaseGUI.mostrarError(this, "Item No Existe");
-            return;
-        }
-
-        if (item instanceof MenuActions) {
-            MenuActions menuItem = (MenuActions) item;
-            menuItem.submenu();
-        } else {
-            BaseGUI.mostrarAdvertencia(this, 
-                "Este ítem no tiene submenú disponible.\n" +
-                "Solo los videojuegos (Game) tienen submenú.");
+            if (item instanceof MenuActions) {
+                MenuActions menuItem = (MenuActions) item;
+                menuItem.submenu();
+            } else {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Este ítem no tiene submenú disponible.\nSolo los videojuegos tienen submenú.",
+                    "Información",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Código inválido.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
         }
     }
 
     private void imprimirTodo() {
         if (items.isEmpty()) {
-            BaseGUI.mostrarAdvertencia(this, "No hay ítems registrados en el sistema.");
+            JOptionPane.showMessageDialog(
+                this,
+                "No hay ítems registrados en el sistema.",
+                "Advertencia",
+                JOptionPane.WARNING_MESSAGE
+            );
             return;
         }
         
-        JDialog dialogo = new JDialog(this, "Lista de Ítems", true);
+        JDialog dialogo = new JDialog(this, "Lista de Ítems Registrados", true);
         dialogo.setSize(950, 750);
         dialogo.setLocationRelativeTo(this);
         
@@ -166,16 +232,14 @@ public class MenuGUI extends JFrame {
         contenedor.setBackground(new Color(245, 245, 245));
         contenedor.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         
-        // Encabezado
         JLabel encabezado = new JLabel("Total de ítems: " + items.size(), SwingConstants.CENTER);
         encabezado.setFont(new Font("Arial", Font.BOLD, 18));
         encabezado.setForeground(new Color(33, 150, 243));
         contenedor.add(encabezado);
         contenedor.add(Box.createRigidArea(new Dimension(0, 15)));
         
-        // Tarjetas de ítems
         for (RenItem item : items) {
-            JPanel tarjeta = crearTarjetaMejorada(item);
+            JPanel tarjeta = crearTarjeta(item);
             contenedor.add(tarjeta);
             contenedor.add(Box.createRigidArea(new Dimension(0, 15)));
         }
@@ -188,7 +252,7 @@ public class MenuGUI extends JFrame {
         dialogo.setVisible(true);
     }
 
-    private JPanel crearTarjetaMejorada(RenItem item) {
+    private JPanel crearTarjeta(RenItem item) {
         JPanel tarjeta = new JPanel(new BorderLayout(15, 15));
         tarjeta.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(220, 220, 220), 2),
@@ -197,7 +261,6 @@ public class MenuGUI extends JFrame {
         tarjeta.setBackground(Color.WHITE);
         tarjeta.setMaximumSize(new Dimension(900, 220));
         
-        // Imagen
         if (item.getImagenitem() != null) {
             JLabel lblImagen = new JLabel();
             ImageIcon icon = item.getImagenitem();
@@ -207,18 +270,16 @@ public class MenuGUI extends JFrame {
             tarjeta.add(lblImagen, BorderLayout.WEST);
         }
         
-        // Información
         JPanel panelInfo = new JPanel();
         panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
         panelInfo.setBackground(Color.WHITE);
         
-        JLabel lblNombre = new JLabel("📌 " + item.getNombreItem());
+        JLabel lblNombre = new JLabel("Nombre: " + item.getNombreItem());
         lblNombre.setFont(new Font("Arial", Font.BOLD, 20));
         lblNombre.setForeground(new Color(33, 150, 243));
         panelInfo.add(lblNombre);
         panelInfo.add(Box.createRigidArea(new Dimension(0, 10)));
         
-        // Estado para películas
         if (item instanceof Movie) {
             Movie movie = (Movie) item;
             JLabel lblEstado = new JLabel("Estado: " + movie.getEstado());
@@ -239,13 +300,6 @@ public class MenuGUI extends JFrame {
         lblCodigo.setFont(new Font("Arial", Font.PLAIN, 14));
         lblCodigo.setForeground(Color.GRAY);
         panelInfo.add(lblCodigo);
-        panelInfo.add(Box.createRigidArea(new Dimension(0, 8)));
-        
-        String tipo = item instanceof Movie ? "Película" : "Videojuego";
-        JLabel lblTipo = new JLabel("Tipo: " + tipo);
-        lblTipo.setFont(new Font("Arial", Font.ITALIC, 14));
-        lblTipo.setForeground(new Color(100, 100, 100));
-        panelInfo.add(lblTipo);
         
         tarjeta.add(panelInfo, BorderLayout.CENTER);
         
@@ -253,11 +307,13 @@ public class MenuGUI extends JFrame {
     }
 
     private void salir() {
-        int opcion = JOptionPane.showConfirmDialog(this,
+        int opcion = JOptionPane.showConfirmDialog(
+            this,
             "¿Está seguro que desea salir del sistema?",
             "Confirmar Salida",
             JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE);
+            JOptionPane.QUESTION_MESSAGE
+        );
         
         if (opcion == JOptionPane.YES_OPTION) {
             System.exit(0);
@@ -275,11 +331,6 @@ public class MenuGUI extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             MenuGUI menu = new MenuGUI();
             menu.setVisible(true);
         });

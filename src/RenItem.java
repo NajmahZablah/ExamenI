@@ -20,9 +20,9 @@ public abstract class RenItem {
         this.codigoitem = codigoitem;
         this.nombreItem = nombreItem;
         this.precioBaseRenta = precioBaseRenta;
-        this.cantcopias = 0;
+        this.cantcopias = cantcopias;
 
-    if (rutaImagen != null && !rutaImagen.isEmpty()) {
+        if (rutaImagen != null && !rutaImagen.isEmpty()) {
             this.imagenitem = new ImageIcon(rutaImagen);
         }
     }
@@ -50,8 +50,24 @@ public abstract class RenItem {
     public void setImagenitem(ImageIcon imagenitem) {
         this.imagenitem = imagenitem;
     }
-    public abstract double pagoRenta(int dias);
     
+    public boolean hayDisponibilidad() {
+        return cantcopias > 0;
+    }
+    
+    public boolean rentarCopia() {
+        if (cantcopias > 0) {
+            cantcopias--;
+            return true;
+        }
+        return false;
+    }
+    
+    public void devolverCopia() {
+        cantcopias++;
+    }
+    
+    public abstract double pagoRenta(int dias);
     
     @Override
     public String toString() {
@@ -61,4 +77,3 @@ public abstract class RenItem {
                ", Copias: " + cantcopias;
     }
 }
-

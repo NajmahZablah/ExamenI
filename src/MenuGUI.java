@@ -87,12 +87,6 @@ public class MenuGUI extends JFrame {
 
         add(mainPanel, BorderLayout.CENTER);
         
-        // Footer
-        JLabel footer = new JLabel("2025 Sistema de Renta Multimedia :)", SwingConstants.CENTER);
-        footer.setFont(new Font("Arial", Font.PLAIN, 12));
-        footer.setForeground(Color.GRAY);
-        footer.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        add(footer, BorderLayout.SOUTH);
     }
 
     private JButton crearBotonMenu(String texto, Color color) {

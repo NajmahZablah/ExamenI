@@ -43,6 +43,9 @@ public abstract class RenItem {
     }
 
 
+    public abstract double pagoRenta(int dias);
+    
+    
     @Override
     public String toString() {
         return "Codigo: " + codigoitem +

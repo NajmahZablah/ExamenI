@@ -44,5 +44,34 @@ public class Movie extends RenItem {
         } else {
             return "NORMAL";
         }
-    }   
+    }
+    
+    @Override 
+    public String toString() {
+        return super.toString() + " - Movie";
+    }
+    
+    @Override 
+    public double pagoRenta(int dias) {
+        double cargo = 0;
+        String estado = getEstado();
+        
+        if (estado.equals("ESTRENO")) {
+            if (dias > 2) {
+                int diasAdicionales = dias - 2;
+                cargo = super.pagoRenta(dias) + (diasAdicionales * 50);
+            } else {
+                cargo = super.pagoRenta(dias);
+            }
+        } else {
+            if (dias > 5) {
+                int diasAdicionales = dias - 5;
+                cargo = super.pagoRenta(dias) + (diasAdicionales * 30);
+            } else {
+                cargo = super.pagoRenta(dias);
+            }
+        }
+        
+        return cargo;
+    }
 }

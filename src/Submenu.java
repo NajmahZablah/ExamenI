@@ -13,9 +13,18 @@ import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
 
+import javax.swing.*;
+import java.awt.*;
+
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * Submenú para un Game (Videojuego) con botones de acción.
+ */
 public class Submenu extends JFrame {
 
-    private MenuActions itemSeleccionado; 
+    private MenuActions itemSeleccionado; // Game que tiene el submenú
     private JLabel lblImagen;
     private JPanel panelInfo;
 
@@ -28,7 +37,7 @@ public class Submenu extends JFrame {
     }
 
     private void configurarVentana() {
-        setTitle("Submenú Ítem");
+        setTitle("Submenú Videojuego");
         setSize(700, 600);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(15, 15));
@@ -44,6 +53,7 @@ public class Submenu extends JFrame {
                 BorderFactory.createLineBorder(new Color(200, 200, 200), 1)
         ));
 
+        // Imagen a la izquierda
         lblImagen = new JLabel("Sin imagen", SwingConstants.CENTER);
         lblImagen.setPreferredSize(new Dimension(250, 250));
         lblImagen.setBorder(BorderFactory.createCompoundBorder(
@@ -62,6 +72,7 @@ public class Submenu extends JFrame {
 
         panelInfo.add(lblImagen, BorderLayout.WEST);
 
+        // Información a la derecha
         JPanel panelDatos = new JPanel();
         panelDatos.setLayout(new BoxLayout(panelDatos, BoxLayout.Y_AXIS));
         panelDatos.setBackground(Color.WHITE);
@@ -80,7 +91,7 @@ public class Submenu extends JFrame {
         panelDatos.add(lblCodigo);
         panelDatos.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        JLabel lblTipo = new JLabel("Tipo: " + (ri instanceof Movie ? "Película" : "Videojuego"));
+        JLabel lblTipo = new JLabel("Tipo: Videojuego");
         lblTipo.setFont(new Font("Arial", Font.ITALIC, 16));
         lblTipo.setForeground(Color.DARK_GRAY);
         panelDatos.add(lblTipo);
@@ -97,7 +108,8 @@ public class Submenu extends JFrame {
     }
 
     private void crearBotonesSubmenu() {
-        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 15));
+        JPanel panelBotones = new JPanel(new GridLayout(4, 1, 15, 15));
+        panelBotones.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
         panelBotones.setBackground(new Color(245, 245, 245));
 
         JButton btnActualizar = BaseGUI.crearBoton("Actualizar Fecha de Publicación", new Color(33, 150, 243));
@@ -112,10 +124,10 @@ public class Submenu extends JFrame {
 
         add(panelBotones, BorderLayout.SOUTH);
 
+        // Conectar botones con las acciones de Game
         btnActualizar.addActionListener(e -> itemSeleccionado.ejecutarOpcion(1));
         btnAgregar.addActionListener(e -> itemSeleccionado.ejecutarOpcion(2));
         btnVer.addActionListener(e -> itemSeleccionado.ejecutarOpcion(3));
         btnSalir.addActionListener(e -> dispose());
     }
 }
-

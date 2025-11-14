@@ -82,7 +82,7 @@ public class Submenu extends JDialog {
         add(panelBotones, BorderLayout.SOUTH);
 
         MenuActions menuItem = (MenuActions) itemSeleccionado;
-
+//aaaaaa
         btn1.addActionListener(e -> menuItem.ejecutarOpcion(1));
         btn2.addActionListener(e -> menuItem.ejecutarOpcion(2));
         btn3.addActionListener(e -> menuItem.ejecutarOpcion(3));

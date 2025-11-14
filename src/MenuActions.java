@@ -7,6 +7,9 @@
  *
  * @author najma
  */
-public class MenuActions {
+public interface MenuActions {
     
+    // Funciones
+    void submenu();
+    void ejecutarOpcion(int opcion);
 }

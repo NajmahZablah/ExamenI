@@ -19,6 +19,8 @@ public class Movie extends RenItem {
             int cantcopias) {
         super(codigoItem, nombreItem, precioBaseRenta, cantcopias);
         this.fechaEstreno = Calendar.getInstance();
+        
+        
     }
     
     // Getter

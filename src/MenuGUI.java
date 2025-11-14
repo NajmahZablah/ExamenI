@@ -40,7 +40,7 @@ public class MenuGUI extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Título principal
-        JLabel titulo = new JLabel("🎬 Sistema de Renta Multimedia 🎮", SwingConstants.CENTER);
+        JLabel titulo = new JLabel("Sistema de Renta Multimedia", SwingConstants.CENTER);
         titulo.setFont(new Font("Arial", Font.BOLD, 32));
         titulo.setForeground(new Color(33, 150, 243));
         gbc.gridx = 0;
@@ -61,34 +61,34 @@ public class MenuGUI extends JFrame {
 
         // Botones del menú
         gbc.gridy = 3;
-        JButton btnAgregar = crearBotonMenu("➕ Agregar Ítem", new Color(76, 175, 80));
+        JButton btnAgregar = crearBotonMenu("Agregar Ítem", new Color(76, 175, 80));
         btnAgregar.addActionListener(e -> abrirAgregarItem());
         mainPanel.add(btnAgregar, gbc);
 
         gbc.gridy = 4;
-        JButton btnRentar = crearBotonMenu("💰 Rentar", new Color(33, 150, 243));
+        JButton btnRentar = crearBotonMenu("Rentar", new Color(33, 150, 243));
         btnRentar.addActionListener(e -> abrirRentar());
         mainPanel.add(btnRentar, gbc);
 
         gbc.gridy = 5;
-        JButton btnSubmenu = crearBotonMenu("⚙️ Ejecutar Submenú", new Color(255, 152, 0));
+        JButton btnSubmenu = crearBotonMenu("Ejecutar Submenú", new Color(255, 152, 0));
         btnSubmenu.addActionListener(e -> ejecutarSubmenu());
         mainPanel.add(btnSubmenu, gbc);
 
         gbc.gridy = 6;
-        JButton btnImprimir = crearBotonMenu("📋 Imprimir Todo", new Color(156, 39, 176));
+        JButton btnImprimir = crearBotonMenu("Imprimir Todo", new Color(156, 39, 176));
         btnImprimir.addActionListener(e -> imprimirTodo());
         mainPanel.add(btnImprimir, gbc);
 
         gbc.gridy = 7;
-        JButton btnSalir = crearBotonMenu("🚪 Salir", new Color(244, 67, 54));
+        JButton btnSalir = crearBotonMenu("Salir", new Color(244, 67, 54));
         btnSalir.addActionListener(e -> salir());
         mainPanel.add(btnSalir, gbc);
 
         add(mainPanel, BorderLayout.CENTER);
         
         // Footer
-        JLabel footer = new JLabel("© 2024 Sistema de Renta Multimedia", SwingConstants.CENTER);
+        JLabel footer = new JLabel("2025 Sistema de Renta Multimedia :)", SwingConstants.CENTER);
         footer.setFont(new Font("Arial", Font.PLAIN, 12));
         footer.setForeground(Color.GRAY);
         footer.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -163,7 +163,7 @@ public class MenuGUI extends JFrame {
             return;
         }
         
-        JDialog dialogo = new JDialog(this, "📋 Lista de Ítems", true);
+        JDialog dialogo = new JDialog(this, "Lista de Ítems", true);
         dialogo.setSize(950, 750);
         dialogo.setLocationRelativeTo(this);
         
@@ -227,7 +227,7 @@ public class MenuGUI extends JFrame {
         // Estado para películas
         if (item instanceof Movie) {
             Movie movie = (Movie) item;
-            JLabel lblEstado = new JLabel("🎬 Estado: " + movie.getEstado());
+            JLabel lblEstado = new JLabel("Estado: " + movie.getEstado());
             lblEstado.setFont(new Font("Arial", Font.BOLD, 16));
             lblEstado.setForeground(movie.getEstado().equals("ESTRENO") ? 
                 new Color(255, 87, 34) : new Color(76, 175, 80));
@@ -235,19 +235,19 @@ public class MenuGUI extends JFrame {
             panelInfo.add(Box.createRigidArea(new Dimension(0, 8)));
         }
         
-        JLabel lblPrecio = new JLabel("💵 Precio de Renta: Lps. " + 
+        JLabel lblPrecio = new JLabel("Precio de Renta: Lps. " + 
             String.format("%.2f", item.getPrecioBaseRenta()));
         lblPrecio.setFont(new Font("Arial", Font.PLAIN, 15));
         panelInfo.add(lblPrecio);
         panelInfo.add(Box.createRigidArea(new Dimension(0, 8)));
         
-        JLabel lblCodigo = new JLabel("🔢 Código: " + item.getCodigoitem());
+        JLabel lblCodigo = new JLabel("Código: " + item.getCodigoitem());
         lblCodigo.setFont(new Font("Arial", Font.PLAIN, 14));
         lblCodigo.setForeground(Color.GRAY);
         panelInfo.add(lblCodigo);
         panelInfo.add(Box.createRigidArea(new Dimension(0, 8)));
         
-        String tipo = item instanceof Movie ? "🎬 Película" : "🎮 Videojuego";
+        String tipo = item instanceof Movie ? "Película" : "Videojuego";
         JLabel lblTipo = new JLabel("Tipo: " + tipo);
         lblTipo.setFont(new Font("Arial", Font.ITALIC, 14));
         lblTipo.setForeground(new Color(100, 100, 100));

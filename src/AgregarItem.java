@@ -101,7 +101,7 @@ public class AgregarItem extends JFrame {
 
         // Botón seleccionar imagen
         gbc.gridy = 6; gbc.gridx = 0; gbc.gridwidth = 2;
-        JButton btnSeleccionar = new JButton("📁 Seleccionar Imagen");
+        JButton btnSeleccionar = new JButton("Seleccionar Imagen");
         btnSeleccionar.setFont(new Font("Arial", Font.BOLD, 14));
         btnSeleccionar.setBackground(new Color(255, 152, 0));
         btnSeleccionar.setForeground(Color.WHITE);
@@ -133,7 +133,7 @@ public class AgregarItem extends JFrame {
         btnGuardar.addActionListener(e -> guardarItem());
         panelBotones.add(btnGuardar);
 
-        JButton btnCancelar = crearBotonAccion("❌ Cancelar", new Color(244, 67, 54));
+        JButton btnCancelar = crearBotonAccion("Cancelar", new Color(244, 67, 54));
         btnCancelar.addActionListener(e -> dispose());
         panelBotones.add(btnCancelar);
 

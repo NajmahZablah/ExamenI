@@ -89,15 +89,10 @@ public class MenuGUI extends JFrame {
         agregar.setVisible(true);
     }
 
-//    private void abrirRentar() {
-//        if (items.isEmpty()) {
-//            BaseGUI.mostrarAdvertencia(this, "No hay ítems registrados.");
-//            return;
-//        }
-//        RentarItemFrame rentarFrame = new RentarItemFrame(items); // JFrame de renta
-//        rentarFrame.setVisible(true);
-//    }
-//
+    private void abrirRentar() {
+      
+    }
+
 //    private void abrirSubmenu() {
 //        if (items.isEmpty()) {
 //            BaseGUI.mostrarAdvertencia(this, "No hay ítems registrados.");
@@ -137,11 +132,5 @@ public class MenuGUI extends JFrame {
 //        }
 //        return null;
 //    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            MenuGUI menu = new MenuGUI();
-            menu.setVisible(true);
-        });
-    }
+  
 }

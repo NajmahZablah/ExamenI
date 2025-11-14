@@ -10,85 +10,112 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-
+import javax.swing.*;
+import java.awt.*;
 
 public class Submenu extends JFrame {
 
-    private ArrayList<RenItem> items;
-    private RenItem itemSeleccionado;
+    private MenuActions itemSeleccionado; 
+    private JLabel lblImagen;
+    private JPanel panelInfo;
 
-    public Submenu(ArrayList<RenItem> items) {
-        this.items = items;
+    public Submenu(MenuActions item) {
+        this.itemSeleccionado = item;
         configurarVentana();
-        seleccionarItem();
-    }
-
-    private void configurarVentana() {
-        setTitle("Submenú Ítem");
-        setSize(600, 500);
-        setLocationRelativeTo(null);
-        setLayout(new BorderLayout(10, 10));
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    }
-
-    private void seleccionarItem() {
-        Integer codigo = BaseGUI.solicitarEntero(this, "Ingrese el código del ítem:");
-        if (codigo == null) {
-            dispose();
-            return;
-        }
-
-        itemSeleccionado = null;
-        for (RenItem item : items) {
-            if (item.getCodigoitem() == codigo) {
-                itemSeleccionado = item;
-                break;
-            }
-        }
-
-        if (itemSeleccionado == null) {
-            BaseGUI.mostrarError(this, "Item No Existe");
-            dispose();
-            return;
-        }
-
         mostrarInfoItem();
-
-        if (!(itemSeleccionado instanceof MenuActions)) {
-            BaseGUI.mostrarAdvertencia(this, "Este ítem no tiene submenú.");
-            dispose();
-            return;
-        }
-
         crearBotonesSubmenu();
         setVisible(true);
     }
 
+    private void configurarVentana() {
+        setTitle("Submenú Ítem");
+        setSize(700, 600);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout(15, 15));
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        getContentPane().setBackground(new Color(245, 245, 245));
+    }
+
     private void mostrarInfoItem() {
-        JPanel panel = BaseGUI.crearPanelInfoConImagen(itemSeleccionado);
-        add(panel, BorderLayout.CENTER);
+        panelInfo = new JPanel(new BorderLayout(10, 10));
+        panelInfo.setBackground(Color.WHITE);
+        panelInfo.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(20, 20, 20, 20),
+                BorderFactory.createLineBorder(new Color(200, 200, 200), 1)
+        ));
+
+        lblImagen = new JLabel("Sin imagen", SwingConstants.CENTER);
+        lblImagen.setPreferredSize(new Dimension(250, 250));
+        lblImagen.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(200, 200, 200), 2),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+        lblImagen.setOpaque(true);
+        lblImagen.setBackground(new Color(250, 250, 250));
+
+        if (itemSeleccionado instanceof RenItem ri && ri.getImagenitem() != null) {
+            ImageIcon icon = ri.getImagenitem();
+            Image img = icon.getImage().getScaledInstance(250, 250, Image.SCALE_SMOOTH);
+            lblImagen.setIcon(new ImageIcon(img));
+            lblImagen.setText("");
+        }
+
+        panelInfo.add(lblImagen, BorderLayout.WEST);
+
+        JPanel panelDatos = new JPanel();
+        panelDatos.setLayout(new BoxLayout(panelDatos, BoxLayout.Y_AXIS));
+        panelDatos.setBackground(Color.WHITE);
+        panelDatos.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 10));
+
+        RenItem ri = (RenItem) itemSeleccionado;
+
+        JLabel lblNombre = new JLabel("Nombre: " + ri.getNombreItem());
+        lblNombre.setFont(new Font("Arial", Font.BOLD, 20));
+        panelDatos.add(lblNombre);
+        panelDatos.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        JLabel lblCodigo = new JLabel("Código: " + ri.getCodigoitem());
+        lblCodigo.setFont(new Font("Arial", Font.PLAIN, 16));
+        lblCodigo.setForeground(Color.GRAY);
+        panelDatos.add(lblCodigo);
+        panelDatos.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        JLabel lblTipo = new JLabel("Tipo: " + (ri instanceof Movie ? "Película" : "Videojuego"));
+        lblTipo.setFont(new Font("Arial", Font.ITALIC, 16));
+        lblTipo.setForeground(Color.DARK_GRAY);
+        panelDatos.add(lblTipo);
+        panelDatos.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        JLabel lblPrecio = new JLabel("Precio Base: Lps. " + String.format("%.2f", ri.getPrecioBaseRenta()));
+        lblPrecio.setFont(new Font("Arial", Font.PLAIN, 16));
+        panelDatos.add(lblPrecio);
+        panelDatos.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        panelInfo.add(panelDatos, BorderLayout.CENTER);
+
+        add(panelInfo, BorderLayout.CENTER);
     }
 
     private void crearBotonesSubmenu() {
-        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 15));
+        panelBotones.setBackground(new Color(245, 245, 245));
 
-        JButton btn1 = BaseGUI.crearBoton("Actualizar Fecha de Publicación", new Color(33, 150, 243));
-        JButton btn2 = BaseGUI.crearBoton("Agregar Especificación", new Color(76, 175, 80));
-        JButton btn3 = BaseGUI.crearBoton("Ver Especificaciones", new Color(255, 152, 0));
+        JButton btnActualizar = BaseGUI.crearBoton("Actualizar Fecha de Publicación", new Color(33, 150, 243));
+        JButton btnAgregar = BaseGUI.crearBoton("Agregar Especificación", new Color(76, 175, 80));
+        JButton btnVer = BaseGUI.crearBoton("Ver Especificaciones", new Color(255, 152, 0));
         JButton btnSalir = BaseGUI.crearBoton("Salir", new Color(244, 67, 54));
 
-        panelBotones.add(btn1);
-        panelBotones.add(btn2);
-        panelBotones.add(btn3);
+        panelBotones.add(btnActualizar);
+        panelBotones.add(btnAgregar);
+        panelBotones.add(btnVer);
         panelBotones.add(btnSalir);
 
         add(panelBotones, BorderLayout.SOUTH);
 
-        MenuActions menuItem = (MenuActions) itemSeleccionado;
-
-        btn1.addActionListener(e -> menuItem.ejecutarOpcion(1));
-        btn2.addActionListener(e -> menuItem.ejecutarOpcion(2));
-        btn3.addActionListener(e -> menuItem.ejecutarOpcion(3));
+        btnActualizar.addActionListener(e -> itemSeleccionado.ejecutarOpcion(1));
+        btnAgregar.addActionListener(e -> itemSeleccionado.ejecutarOpcion(2));
+        btnVer.addActionListener(e -> itemSeleccionado.ejecutarOpcion(3));
         btnSalir.addActionListener(e -> dispose());
     }
 }
+

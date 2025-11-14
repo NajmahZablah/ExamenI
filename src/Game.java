@@ -60,23 +60,11 @@ public class Game extends RenItem implements MenuActions {
                " – PS3 Game";
     }
     
+    @Override
     public void submenu() {
-        String menu = "SUBMENU GAME\n" +
-                      "1. Actualizar fecha de publicación\n" +
-                      "2. Agregar especificación\n" +
-                      "3. Ver especificaciones\n" +
-                      "4. Salir";
-
-        String input = JOptionPane.showInputDialog(menu);
-        if (input != null) {
-            try {
-                int op = Integer.parseInt(input);
-                ejecutarOpcion(op);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Opción inválida");
-            }
-        }
+        new Submenu(this); 
     }
+
 
     @Override
         public void ejecutarOpcion(int opcion) {

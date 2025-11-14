@@ -15,7 +15,7 @@ public abstract class RenItem {
      int cantcopias;
      ImageIcon imagenitem;
 
-    public RenItem(int codigoitem, String nombreItem, double precioBaseRenta, int cantcopias, String imagenitem) {
+    public RenItem(int codigoitem, String nombreItem, double precioBaseRenta, int cantcopias) {
         this.codigoitem = codigoitem;
         this.nombreItem = nombreItem;
         this.precioBaseRenta = precioBaseRenta;

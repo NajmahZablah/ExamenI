@@ -11,13 +11,13 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class Game extends RenItem {
+public class Game extends RenItem implements MenuActions {
 
     Calendar fechaPublicacion;
     ArrayList<String> especificaciones;
 
     public Game(int codigo, String nombre, double precioBaseRenta, int copias, String imagen) {
-        super(codigo, nombre, precioBaseRenta, copias, imagen);
+        super(codigo, nombre, precioBaseRenta, copias);
 
         fechaPublicacion = Calendar.getInstance();
         especificaciones = new ArrayList<>();
@@ -25,7 +25,7 @@ public class Game extends RenItem {
 
     @Override
     public double pagoRenta(int dias) {
-        return 20 * dias; // precio fijo
+        return 20 * dias;
     }
 
     public void setFechaPublicacion(int year, int mes, int dia) {
@@ -38,7 +38,6 @@ public class Game extends RenItem {
         return fechaPublicacion;
     }
 
-    // Recursivo para imprimir especificaciones
     public void listEspecificaciones() {
         listarRec(0);
     }
@@ -58,6 +57,46 @@ public class Game extends RenItem {
                (fechaPublicacion.get(Calendar.MONTH) + 1) + "/" +
                fechaPublicacion.get(Calendar.YEAR) +
                " – PS3 Game";
+    }
+    
+    public void submenu() {
+        String menu = "SUBMENU GAME\n" +
+                      "1. Actualizar fecha de publicación\n" +
+                      "2. Agregar especificación\n" +
+                      "3. Ver especificaciones\n" +
+                      "4. Salir";
+
+        int op = Integer.parseInt(JOptionPane.showInputDialog(menu));
+        ejecutarOpcion(op);
+    }
+
+    @Override
+    public void ejecutarOpcion(int opcion) {
+
+        switch (opcion) {
+            case 1:
+                int anio = Integer.parseInt(JOptionPane.showInputDialog("Año:"));
+                int mes = Integer.parseInt(JOptionPane.showInputDialog("Mes:"));
+                int dia = Integer.parseInt(JOptionPane.showInputDialog("Día:"));
+                setFechaPublicacion(anio, mes, dia);
+                break;
+
+            case 2:
+                String esp = JOptionPane.showInputDialog("Especificación:");
+                especificaciones.add(esp);
+                break;
+
+            case 3:
+                if (especificaciones.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "No hay especificaciones.");
+                } else {
+                    listEspecificaciones();
+                }
+                break;
+
+            default:
+                //JOptionPane.showMessageDialog(null, "");
+        }
     }
 
 }

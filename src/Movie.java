@@ -16,8 +16,8 @@ public class Movie extends RenItem {
     
     // constructor
     public Movie(int codigoItem, String nombreItem, double precioBaseRenta, 
-            int cantcopias, String imagenitem) {
-        super(codigoItem, nombreItem, precioBaseRenta, cantcopias, imagenitem);
+            int cantcopias) {
+        super(codigoItem, nombreItem, precioBaseRenta, cantcopias);
         this.fechaEstreno = Calendar.getInstance();
     }
     
@@ -56,19 +56,20 @@ public class Movie extends RenItem {
         double cargo = 0;
         String estado = getEstado();
         
+        double cargoBase = getPrecioBaseRenta() * dias;
         if (estado.equals("ESTRENO")) {
             if (dias > 2) {
                 int diasAdicionales = dias - 2;
-                cargo = super.pagoRenta(dias) + (diasAdicionales * 50);
+                cargo = cargoBase + (diasAdicionales * 50);
             } else {
-                cargo = super.pagoRenta(dias);
+                cargo = cargoBase;
             }
         } else {
             if (dias > 5) {
                 int diasAdicionales = dias - 5;
-                cargo = super.pagoRenta(dias) + (diasAdicionales * 30);
+                cargo = cargoBase + (diasAdicionales * 30);
             } else {
-                cargo = super.pagoRenta(dias);
+                cargo = cargoBase;
             }
         }
         

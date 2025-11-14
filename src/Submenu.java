@@ -11,26 +11,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Submenu extends JDialog {
+public class Submenu extends JFrame {
 
     private ArrayList<RenItem> items;
     private RenItem itemSeleccionado;
 
-    public Submenu(JFrame parent, ArrayList<RenItem> items) {
-        super(parent, "Submenú Ítem", true);
+    public Submenu(ArrayList<RenItem> items) {
         this.items = items;
         configurarVentana();
         seleccionarItem();
     }
 
     private void configurarVentana() {
+        setTitle("Submenú Ítem");
         setSize(600, 500);
-        setLocationRelativeTo(getParent());
+        setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     private void seleccionarItem() {
-        Integer codigo = BaseGUI.solicitarEntero(this, "Ingrese el codigo del item:");
+        Integer codigo = BaseGUI.solicitarEntero(this, "Ingrese el código del ítem:");
         if (codigo == null) {
             dispose();
             return;
@@ -59,6 +60,7 @@ public class Submenu extends JDialog {
         }
 
         crearBotonesSubmenu();
+        setVisible(true);
     }
 
     private void mostrarInfoItem() {
@@ -82,7 +84,7 @@ public class Submenu extends JDialog {
         add(panelBotones, BorderLayout.SOUTH);
 
         MenuActions menuItem = (MenuActions) itemSeleccionado;
-//aaaaaa
+
         btn1.addActionListener(e -> menuItem.ejecutarOpcion(1));
         btn2.addActionListener(e -> menuItem.ejecutarOpcion(2));
         btn3.addActionListener(e -> menuItem.ejecutarOpcion(3));

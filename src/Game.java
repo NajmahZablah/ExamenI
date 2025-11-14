@@ -21,6 +21,7 @@ public class Game extends RenItem implements MenuActions {
 
         fechaPublicacion = Calendar.getInstance();
         especificaciones = new ArrayList<>();
+        this.imagenitem = new ImageIcon(imagen);
     }
 
     @Override
@@ -39,15 +40,16 @@ public class Game extends RenItem implements MenuActions {
     }
 
     public void listEspecificaciones() {
-        listarRec(0);
-    }
+    listEspecificaciones(0);
+}
 
-    private void listarRec(int pos) {
-        if (pos >= especificaciones.size()) return;
+    public void listEspecificaciones(int pos) {
+        if (pos >= especificaciones.size()) 
+            return;
+    JOptionPane.showMessageDialog(null, especificaciones.get(pos));
+    listEspecificaciones(pos + 1);
+}
 
-        JOptionPane.showMessageDialog(null, especificaciones.get(pos));
-        listarRec(pos + 1);
-    }
 
     @Override
     public String toString() {

@@ -17,7 +17,7 @@ public class Game extends RenItem implements MenuActions {
     ArrayList<String> especificaciones;
 
     public Game(int codigo, String nombre, double precioBaseRenta, int copias, String imagen) {
-        super(codigo, nombre, precioBaseRenta, copias, imagen);
+        super(codigo, nombre, precioBaseRenta, copias);
 
         fechaPublicacion = Calendar.getInstance();
         especificaciones = new ArrayList<>();

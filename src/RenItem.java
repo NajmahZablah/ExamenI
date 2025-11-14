@@ -15,13 +15,13 @@ public abstract class RenItem {
      int cantcopias;
      ImageIcon imagenitem;
 
-    public RenItem(int codigoitem, String nombreItem, double precioBaseRenta, int cantcopias) {
+    public RenItem(int codigoitem, String nombreItem, double precioBaseRenta, int cantcopias, String rutaImagen) {
         this.codigoitem = codigoitem;
         this.nombreItem = nombreItem;
         this.precioBaseRenta = precioBaseRenta;
         this.cantcopias = 0;
     }
-
+    
     public int getCodigoitem() {
         return codigoitem;
     }

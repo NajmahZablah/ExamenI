@@ -1,3 +1,5 @@
+
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -7,6 +9,9 @@
  *
  * @author najma
  */
-public class MenuActions {
+public interface MenuActions{
+    
+    public void submenu();               
+    void ejecutarOpcion(int opcion);
     
 }

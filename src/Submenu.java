@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+
 public class Submenu extends JFrame {
 
     private ArrayList<RenItem> items;
@@ -91,4 +92,3 @@ public class Submenu extends JFrame {
         btnSalir.addActionListener(e -> dispose());
     }
 }
-

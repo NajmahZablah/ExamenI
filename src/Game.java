@@ -16,12 +16,11 @@ public class Game extends RenItem implements MenuActions {
     Calendar fechaPublicacion;
     ArrayList<String> especificaciones;
 
-    public Game(int codigo, String nombre, double precioBaseRenta, int copias, String imagen) {
-        super(codigo, nombre, precioBaseRenta, copias);
+    public Game(int codigo, String nombre, double precioBaseRenta, int copias, String rutaImagen) {
+        super(codigo, nombre, precioBaseRenta, copias, rutaImagen);
 
         fechaPublicacion = Calendar.getInstance();
         especificaciones = new ArrayList<>();
-        this.imagenitem = new ImageIcon(imagen);
     }
 
     @Override
@@ -68,37 +67,54 @@ public class Game extends RenItem implements MenuActions {
                       "3. Ver especificaciones\n" +
                       "4. Salir";
 
-        int op = Integer.parseInt(JOptionPane.showInputDialog(menu));
-        ejecutarOpcion(op);
+        String input = JOptionPane.showInputDialog(menu);
+        if (input != null) {
+            try {
+                int op = Integer.parseInt(input);
+                ejecutarOpcion(op);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Opción inválida");
+            }
+        }
     }
 
     @Override
-    public void ejecutarOpcion(int opcion) {
-
+        public void ejecutarOpcion(int opcion) {
         switch (opcion) {
             case 1:
-                int anio = Integer.parseInt(JOptionPane.showInputDialog("Año:"));
-                int mes = Integer.parseInt(JOptionPane.showInputDialog("Mes:"));
-                int dia = Integer.parseInt(JOptionPane.showInputDialog("Día:"));
-                setFechaPublicacion(anio, mes, dia);
+                try {
+                    int anio = Integer.parseInt(JOptionPane.showInputDialog("Año:"));
+                    int mes = Integer.parseInt(JOptionPane.showInputDialog("Mes (1-12):"));
+                    int dia = Integer.parseInt(JOptionPane.showInputDialog("Día (1-31):"));
+                    setFechaPublicacion(anio, mes, dia);
+                    JOptionPane.showMessageDialog(null, "Fecha actualizada exitosamente!");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Error al actualizar fecha");
+                }
                 break;
 
             case 2:
-                String esp = JOptionPane.showInputDialog("Especificación:");
-                especificaciones.add(esp);
+                String esp = JOptionPane.showInputDialog("Ingrese la especificación:");
+                if (esp != null && !esp.trim().isEmpty()) {
+                    especificaciones.add(esp);
+                    JOptionPane.showMessageDialog(null, "Especificación agregada!");
+                }
                 break;
 
             case 3:
                 if (especificaciones.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "No hay especificaciones.");
+                    JOptionPane.showMessageDialog(null, "No hay especificaciones registradas.");
                 } else {
                     listEspecificaciones();
                 }
                 break;
 
+            case 4:
+                JOptionPane.showMessageDialog(null, "Saliendo del submenú...");
+                break;
+
             default:
-                //JOptionPane.showMessageDialog(null, "");
+                JOptionPane.showMessageDialog(null, "Opción inválida");
         }
     }
-
 }
